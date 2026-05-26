@@ -37,7 +37,12 @@ export function MonitorHoras() {
         
         if (configRes.ok) {
           const configData = await configRes.json()
-          setCfg(prev => ({ ...prev, ...configData }))
+          setCfg(prev => ({
+            ...prev,
+            ...Object.fromEntries(
+              Object.entries(configData).filter(([, v]) => v !== '' && v != null)
+            )
+          }))
         }
       } catch (error) {
         console.error('Erro ao carregar dados:', error)

@@ -82,7 +82,8 @@ export function readB64(file: File): Promise<string> {
 
 export function gerarMeses(inicio: string, qtd: number): Omit<MonthData, 'real' | 'acumIdeal' | 'acumReal' | 'passado' | 'atual' | 'futuro' | 'saldoMes' | 'saldoAcum'>[] {
   const out: { key: string; label: string; ano: number; mes: number }[] = []
-  const d = new Date(inicio + 'T12:00:00')
+  const parsed = inicio ? new Date(inicio + 'T12:00:00') : null
+  const d = parsed && !isNaN(parsed.getTime()) ? parsed : new Date(DEFAULT_CONFIG.inicioContrato + 'T12:00:00')
   for (let i = 0; i < qtd; i++) {
     const y = d.getFullYear()
     const m = d.getMonth()
