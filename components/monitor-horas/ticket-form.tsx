@@ -36,6 +36,7 @@ export function TicketForm({ ticket, onSave, onCancel }: TicketFormProps) {
     <div>
       <label className="field-label">Número do RTC</label>
       <input
+        type="text"
         style={W}
         value={f.rtc}
         onChange={e => set('rtc', e.target.value)}
@@ -90,6 +91,7 @@ export function TicketForm({ ticket, onSave, onCancel }: TicketFormProps) {
 
       <label className="field-label" style={{ marginTop: 0 }}>Link</label>
       <input
+        type="text"
         style={W}
         value={f.linkEntregavel || ''}
         onChange={e => set('linkEntregavel', e.target.value)}
