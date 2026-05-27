@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect, useCallback, type CSSProperties } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import { type Ticket, type Config } from './types'
 import { STATUSES, DEFAULT_CONFIG, fmt, fmth } from './utils'
 import { StatusBadge } from './status-badge'
@@ -10,6 +12,7 @@ import { EntregaveisCell } from './entregaveis-cell'
 import { PainelMensal } from './painel-mensal'
 
 export function MonitorHoras() {
+  const router = useRouter()
   const [cfg, setCfg] = useState<Config>(DEFAULT_CONFIG)
   const [tickets, setTickets] = useState<Ticket[]>([])
   const [loaded, setLoaded] = useState(false)
@@ -147,6 +150,12 @@ export function MonitorHoras() {
     setEditTicket(null)
   }, [tickets, createTicket, updateTicket])
 
+  const handleLogout = useCallback(async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/login')
+  }, [router])
+
   const handleDelete = useCallback((id: string) => {
     if (confirm('Remover este RTC?')) {
       deleteTicket(id)
@@ -235,6 +244,7 @@ export function MonitorHoras() {
           <button onClick={() => { setCfgDraft({ ...cfg }); setShowCfg(true) }}>Configurar</button>
           <button onClick={exportCSV}>Exportar CSV</button>
           <button className="primary" onClick={() => { setEditTicket(null); setModal('form') }}>+ Novo RTC</button>
+          <button onClick={handleLogout} style={{ color: '#a32d2d', borderColor: '#f5c6c6' }}>Sair</button>
         </div>
       </div>
 
